@@ -2,8 +2,7 @@
 import torchaudio
 import os
 
-# 这个应该不用在意visqol和visqol.pb2的位置，build之后应该自动能找到。
-# 但也有可能环境情况特殊。
+# 这个需要在visqol文件夹内执行 pip install . ，执行其setup.py文件，从而才能生成可以导入的module
 from visqol import visqol_lib_py
 from visqol.pb2 import visqol_config_pb2
 from visqol.pb2 import similarity_result_pb2
