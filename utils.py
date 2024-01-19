@@ -201,7 +201,8 @@ def summarize(writer, global_step, scalars={}, histograms={}, images={}, audios=
     for k, v in images.items():
         writer.add_image(k, v, global_step, dataformats='HWC')
     for k, v in audios.items():
-        writer.add_audio(k, v, global_step, audio_sampling_rate)
+        # 这里指定为16000了，为了与ViSQOL保持一致，但不影响loss和训练。
+        writer.add_audio(k, v, global_step, 16000)
 
 
 def extract_digits(f):
@@ -318,10 +319,13 @@ def get_hparams(init=True):
                         help='whether to train with pretrained model')
     parser.add_argument('--preserved', type=int, default=4,
                         help='Number of preserved models')
+    parser.add_argument('--eval_size', type=int, default=5,
+                        help='how many evaluation samples you want to generate each 100 steps')
+    parser.add_argument('--eval_dir', type=str, default="./eval_dir",
+                        help='evaluation directory')
 
     args = parser.parse_args()
     model_dir = os.path.join("./", args.model)
-
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
 
