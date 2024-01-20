@@ -46,7 +46,7 @@ import scipy.io.wavfile as wavf
 torch.backends.cudnn.benchmark = True
 global_step = 0
 
-mark = 0
+mark = 0.0
 
 
 def main():
@@ -349,7 +349,7 @@ def evaluate(hps, generator, eval_loader, writer_eval):
         # break
 
       audio_dict = { }
-      sum = 0
+      sum = 0.0
 
       # 注意需要提前创建eval_dir (colab中已创建)
 
