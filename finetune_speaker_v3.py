@@ -357,7 +357,7 @@ def evaluate(hps, generator, eval_loader, writer_eval):
         key = "gt_audio_"+str(i)
         audio_dict.update({key: y[0,:,:y_lengths[0]]})
         # audio_dict[key] = y_hat[0,:,:y_lengths[0]]
-        wavf.write(str(hps.eval_dir)+"/"+key+".wav", 16000 ,y_hat[0,:,:y_hat_lengths[0]].cpu().numpy())
+        wavf.write(str(hps.eval_dir)+"/"+key+".wav", 16000 ,y[0,:,:y_lengths[0]].cpu().numpy())
 
       # 固定选取第0～第eval_size-1个句子作为评估输出。这些句子是固定的，因而在ViSQOL中也能轻易找到对应的参考音频。
       for i in range(hps.eval_size):
@@ -370,7 +370,7 @@ def evaluate(hps, generator, eval_loader, writer_eval):
         y_hat_lengths = mask.sum([1,2]).long() * hps.data.hop_length
       
         key = "gen_audio_"+str(i)
-        audio_dict.update({key: y[0,:,:y_hat_lengths[0]]})
+        audio_dict.update({key: y_hat[0,:,:y_hat_lengths[0]]})
         # audio_dict[key] = y_hat[0,:,:y_hat_lengths[0]]
         wavf.write(str(hps.eval_dir)+"/"+key+".wav", 16000 ,y_hat[0,:,:y_hat_lengths[0]].cpu().numpy())
         sum += ViSQOL_eval.eval(i, hps.eval_dir)
