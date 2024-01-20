@@ -30,6 +30,7 @@ language_marks = {
     "简体中文": "[ZH]",
     "English": "[EN]",
     "Mix": "",
+    "Cantonese": "[GD]",
 }
 
 
@@ -88,6 +89,7 @@ if __name__ == "__main__":
 
 
     if language is not None:
+        # 这里是讲你输入的句子格式化为交给cleaners处理的格式！所以，要加入广东话，除了需要修改cleaners之外，还需要多加一种语言标记！
         text = language_marks[language] + text + language_marks[language]
         speaker_id = speaker_ids[spk]
         stn_tst = get_text(text, hps, False)
