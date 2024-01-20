@@ -1,6 +1,9 @@
 # 此脚本包含批量重采样至16kHz的功能。
+# visqol的api要求输入的2个音频是双精度浮点数double列表。
+# 用soundfile读取出来的就是这种类型！
 import torchaudio
 import os
+import soundfile as sf
 
 # 这个需要在visqol文件夹内执行 pip install . ，执行其setup.py文件，从而才能生成可以导入的module
 from visqol import visqol_lib_py
@@ -36,8 +39,11 @@ def eval(i, operate_path):
 
     api.Create(config)
 
-    reference = os.path.join(operate_path, "gt_audio_"+str(i)+".wav")
-    degraded = os.path.join(operate_path, "gen_audio_"+str(i)+".wav")
+    reference, sr1 = sf.read(os.path.join(operate_path, "gt_audio_"+str(i)+".wav"))
+    degraded, sr2 = sf.read(os.path.join(operate_path, "gen_audio_"+str(i)+".wav"))
+
+    print(reference.shape, reference.dtype, sr1)
+    print(degraded.shape, degraded.dtype, sr2)
     
     similarity_result = api.Measure(reference, degraded)
 
