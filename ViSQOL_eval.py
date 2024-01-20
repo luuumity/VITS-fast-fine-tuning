@@ -52,7 +52,7 @@ def eval(i, operate_path):
         return float_mark
 
 # if __name__=="__main__":
-#     mark = eval(1,"./")
+#     mark = eval(1,".")
 #     print(mark)
 #     print(type(mark))
     # mark = (float)(mark)
