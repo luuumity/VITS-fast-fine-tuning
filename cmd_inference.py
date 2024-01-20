@@ -35,6 +35,7 @@ language_marks = {
 
 
 def get_text(text, hps, is_symbol):
+    # 这里会调用config file里所指定的text cleaner，所幸我另找的那个cantonese的config文件指定的这个项目里就有，名都一样。
     text_norm = text_to_sequence(text, hps.symbols, [] if is_symbol else hps.data.text_cleaners)
     if hps.data.add_blank:
         text_norm = commons.intersperse(text_norm, 0)
