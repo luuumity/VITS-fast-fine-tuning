@@ -377,7 +377,7 @@ def evaluate(hps, generator, eval_loader, writer_eval):
       
       # 以下是ViSQOL的评估部分：
       mark = sum / hps.eval_size
-      print("--------------------------- the average mark for step "+ global_step +" is " + mark +" ---------------------------")
+      print("\n --------------------------- the average mark for step "+ global_step +" is " + mark +" --------------------------- \n")
       # 我猜它会画成方波！
 
       # mel声谱图先不输出了。
