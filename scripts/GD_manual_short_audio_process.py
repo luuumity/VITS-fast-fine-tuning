@@ -29,7 +29,7 @@ speaker_annos = []
 i = 1         
 
 with open("short_character_anno.txt", 'r', encoding='utf-8') as f:
-    line=file.readline()
+    line=f.readline()
     while line:
         text = "[GD]"+line+"[GD]"
         save_path = parent_dir + speaker + "/" + f"{speaker}_{i}.wav"
