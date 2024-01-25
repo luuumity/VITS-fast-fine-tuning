@@ -25,17 +25,28 @@ for speaker in speaker_names:
 
 # 运行完后可以用!file命令查看采样率是否为json中的目标采样率。
 
+print("修改格式中：")
+print(speaker_names[0])
+
 speaker_annos = []           
 i = 1         
 
-with open("short_character_anno.txt", 'r', encoding='utf-8') as f:
+with open("short_character_raw.txt", 'r') as f:
     line=f.readline()
     while line:
+        # 去掉原本回车符：（需要）
+        line = line.strip()
         text = "[GD]"+line+"[GD]"
-        save_path = parent_dir + speaker + "/" + f"{speaker}_{i}.wav"
-        speaker_annos.append(save_path + "|" + speaker + "|" + text)
+        save_path = parent_dir + speaker_names[0] + "/" + speaker_names[0] + f"_{i}.wav"
+        speaker_annos.append(save_path + "|" + speaker_names[0] + "|" + text)
+        # 每次打印检查：
+        print(speaker_annos[i-1])
         i+=1
+        # 必须用这个才能读取下一行！否则会陷入死循环！一直在读取第一行。
+        line=f.readline()
 
 with open("short_character_anno.txt", 'w', encoding='utf-8') as f:
     for line in speaker_annos:
-        f.write(line)
+        # 需要手动补上换行符，竟然不会自动换行！
+        # 也是因为f.write()，又不是f.writelines()，那个line只是我们自己取的变量名。
+        f.write(line + "\n")
