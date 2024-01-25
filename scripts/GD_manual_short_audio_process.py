@@ -34,6 +34,7 @@ with open("short_character_anno.txt", 'r', encoding='utf-8') as f:
         text = "[GD]"+line+"[GD]"
         save_path = parent_dir + speaker + "/" + f"{speaker}_{i}.wav"
         speaker_annos.append(save_path + "|" + speaker + "|" + text)
+        i+=1
 
 with open("short_character_anno.txt", 'w', encoding='utf-8') as f:
     for line in speaker_annos:
