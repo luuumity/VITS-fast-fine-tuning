@@ -1,6 +1,8 @@
 from torch.utils.data import DataLoader
 
+import torch
 import utils
+
 
 # 只有这里改动了一下，换成了data_utils_v2，用于检测是不是在 DataLoader 中隐式调用的 __call__ 函数。
 from data_utils_v2 import (
@@ -9,15 +11,36 @@ from data_utils_v2 import (
   DistributedBucketSampler
 )
 
+n_gpus = torch.cuda.device_count()
+rank = 0
+
 hps = utils.get_hparams()
 symbols = hps['symbols']
 
 collate_fn = TextAudioSpeakerCollate()
 
+print("—————————————— 现在是train set的DataLoader ——————————————")
+
+train_dataset = TextAudioSpeakerLoader(hps.data.training_files, hps.data, symbols)
+train_sampler = DistributedBucketSampler(
+      train_dataset,
+      hps.train.batch_size,
+      [32,300,400,500,600,700,800,900,1000],
+      num_replicas=n_gpus,
+      rank=rank,
+      shuffle=True)
+train_loader = DataLoader(train_dataset, num_workers=2, shuffle=False, pin_memory=True,
+      collate_fn=collate_fn, batch_sampler=train_sampler)
+
+print("—————————————— 现在是evaluate set的DataLoader ——————————————")
+
 eval_dataset = TextAudioSpeakerLoader(hps.data.validation_files, hps.data, symbols)
 eval_loader = DataLoader(eval_dataset, num_workers=0, shuffle=False,
     batch_size=hps.train.batch_size, pin_memory=True,
     drop_last=False, collate_fn=collate_fn)
+
+
+print("—————————————— evaluate set的全部形状 ——————————————")
 
 for batch_idx, (x, x_lengths, spec, spec_lengths, y, y_lengths, speakers) in enumerate(eval_loader):
     print(batch_idx)
