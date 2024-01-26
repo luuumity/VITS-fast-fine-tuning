@@ -24,7 +24,9 @@ for speaker in speaker_names:
                 # 但如果我第一次跑这个脚本没有加这句话，后面再加上也没有用。因为后面的if判断不满足，这个wav并不会被保存！！！
                 if sr != target_sr:
                     wav = torchaudio.transforms.Resample(orig_freq=sr, new_freq=target_sr)(wav)
-                    torchaudio.save(os.path.join(root, file), wav, target_sr, channels_first=True)
+
+                # 确保每个音频样本都按照 wav = wav.mean(dim=0).unsqueeze(0) 统一形状了，并重新存储。
+                torchaudio.save(os.path.join(root, file), wav, target_sr, channels_first=True)
 
 # 运行完后可以用!file命令查看采样率是否为json中的目标采样率。
 
