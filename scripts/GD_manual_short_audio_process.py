@@ -19,6 +19,9 @@ for speaker in speaker_names:
                 # print(file)
                 wav, sr = torchaudio.load(os.path.join(root, file), frame_offset=0, num_frames=-1,
                                         normalize=True, channels_first=True)
+                # 我和原音频处理脚本就差了这么一句话：
+                wav = wav.mean(dim=0).unsqueeze(0)
+                # 但如果我第一次跑这个脚本没有加这句话，后面再加上也没有用。因为后面的if判断不满足，这个wav并不会被保存！！！
                 if sr != target_sr:
                     wav = torchaudio.transforms.Resample(orig_freq=sr, new_freq=target_sr)(wav)
                     torchaudio.save(os.path.join(root, file), wav, target_sr, channels_first=True)
